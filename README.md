@@ -48,4 +48,4 @@ And then copy the string to the .env file.
 
 - Run ``` psql < schema.sql ``` to create tables to the database.
 
-- Run ``` flask run ``` in the root of the application.
+- Run ``` bash start.sh ``` in the root of the application.

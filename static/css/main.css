@@ -49,3 +49,11 @@ textarea {
     font-family: "Source Sans Pro", sans-serif;
 
 }
+
+.post_text {
+    background: #009688;
+    padding: 1em;
+    border-radius: 1em;
+    color: #FFECB3;
+    font-family: "Source Sans Pro", sans-serif;
+}

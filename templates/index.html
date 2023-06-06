@@ -44,4 +44,18 @@
 
 {% endif %}
 
+{% if posts %}
+<br>
+<h4>Newest posts on Bitter</h4>
+<br>
+    {% for post in posts %}
+    <div class="post_text">
+        Written by: {{ post.username }}<br>
+        <p>{{ post.text }}</p>
+    </div>
+    <br>
+{% endfor %}
+{% else %}
+<p>No posts on Bitter yet! Sign in and post something!</p>
+{% endif %}
 {% endblock %}

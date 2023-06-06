@@ -45,9 +45,18 @@ class Repository:
         # SQL injection
         user_id = self._get_user_id()
         sql = f"""INSERT INTO posts(user_id, text)
-        VALUES ('{user_id}', '{text}')"""
+        VALUES ('{user_id}', '{post_text}')"""
         self._db.session.execute(text(sql))
         self._db.session.commit()
         return True
+    
+    def get_all_posts(self):
+        sql = """SELECT posts.id, posts.text, posts.created_at, users.id AS user_id, users.username
+                FROM posts
+                LEFT JOIN users ON posts.user_id = users.id
+                ORDER BY posts.created_at DESC
+                LIMIT 100"""
+        results = self._db.session.execute(text(sql)).fetchall()
+        return results
 
 repository = Repository()

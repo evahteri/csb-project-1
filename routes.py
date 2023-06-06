@@ -6,7 +6,8 @@ from services.repository import repository
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    posts = repository.get_all_posts()
+    return render_template("index.html", posts=posts)
 
 @app.route("/users")
 def users():
@@ -48,6 +49,9 @@ def sign_in():
 @app.route("/post_text", methods=["POST"])
 def post():
     post_text = request.form["post_text"]
+    if len(post_text) < 1:
+        # Error here to demo the debugger
+        return error
     repository.create_post(post_text)
     flash("Posted on Bitter!")
     return redirect("/")
