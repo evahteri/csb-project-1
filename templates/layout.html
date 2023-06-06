@@ -1,0 +1,29 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='../static/css/main.css') }}">
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=sourse+sans+pro">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+<!doctype html>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bitter - {% block title %}{% endblock %}</title>
+<div class="header">
+  <h1> <a href="/">Bitter</a></h1>
+  <a href="/">
+    Home
+  </a>
+  {% if session["username"] %}
+  <a href="/sign_out">
+    Sign out
+  </a>
+  {% endif %}
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <ul class=flashes>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+</div>
+  {% block content %}{% endblock %}

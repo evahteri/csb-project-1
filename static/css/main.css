@@ -1,0 +1,41 @@
+body {
+    background-color: #FFECB3;
+    margin: auto;
+    max-width: 45em;
+    font-family: "Source Sans Pro", sans-serif;
+    color: #212121;
+    line-height: 1.5;
+    padding: 1em;
+    max-width: 50em;
+    text-align: left;
+}
+
+p {
+    font-family: "Source Sans Pro", sans-serif;
+    color: #212121;
+}
+
+a {
+    text-decoration: none;
+    color: #212121;
+    font-weight: bold;
+}
+
+input {
+    border: none;
+    border-radius: 0.5em;
+    height: 2em;
+}
+
+.header {
+    padding: 2em;
+    border-radius: 1em;
+    background: #FFC107;
+}
+
+button {
+    border: none;
+    vertical-align: middle;
+    background-color: transparent;
+
+}
