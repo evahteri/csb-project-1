@@ -2,7 +2,7 @@ from flask import Flask
 from flask import render_template, request, jsonify, flash, redirect, session
 import json
 from app import app
-from services.repository import user_repository
+from services.repository import repository
 
 @app.route("/")
 def index():
@@ -18,10 +18,12 @@ def users():
 def create_user():
     username = request.form["username"]
     password = request.form["password"]
-    if user_repository.search_user(username):
+    if username or password == "" or None:
+        flash("")
+    if repository.search_user(username):
         flash("Username already exists!")
         return redirect("/")
-    if user_repository.create_user(username, password, role=0):
+    if repository.create_user(username, password, role=0):
         flash("User created successfully!")
         return redirect("/")
 
@@ -36,10 +38,18 @@ def sign_out():
 def sign_in():
     username = request.form["username"]
     password = request.form["password"]
-    if user_repository.sign_in(username, password):
+    if repository.sign_in(username, password):
         session["username"] = username
         flash(f"Signed in as {username}")
         return redirect("/")
     flash("Check username and password")
     False
+
+@app.route("/post_text", methods=["POST"])
+def post():
+    post_text = request.form["post_text"]
+    repository.create_post(post_text)
+    flash("Posted on Bitter!")
+    return redirect("/")
+
 

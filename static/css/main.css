@@ -39,3 +39,13 @@ button {
     background-color: transparent;
 
 }
+
+textarea {
+    border: none;
+    padding: 1em;
+    border-radius: 1em;
+    background: #FFC107;
+    color: #212121;
+    font-family: "Source Sans Pro", sans-serif;
+
+}

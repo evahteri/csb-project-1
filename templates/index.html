@@ -13,9 +13,9 @@
 <h4>Sign in</h4>
 <form action="/sign_in" method="POST">
     <p>Username</p>
-    <input type="text" name="username">
+    <input type="text" name="username" required>
     <p>Password</p>
-    <input type="text" name="password">
+    <input type="text" name="password" required>
     <button type="submit"><span class="material-icons">arrow_forward</span></button>
 </form>
 
@@ -23,10 +23,23 @@
 
 <form action="/create_user" method="POST">
     <p>Username</p>
-    <input type="text" name="username">
+    <input type="text" name="username" required>
     <p>Password</p>
-    <input type="text" name="password">
+    <input type="text" name="password" required>
     <button type="submit"><span class="material-icons">arrow_forward</span></button>
+</form>
+
+{% endif %}
+
+{% if session.username %}
+
+<h3>Post to Bitter</h3>
+
+<form action="/post_text" method="POST">
+    <p>Text</p>
+    <textarea type="text" name="post_text" cols="40" rows="20"></textarea>
+    <br>
+    <button type="submit"><span class="material-icons">add</span></button>
 </form>
 
 {% endif %}

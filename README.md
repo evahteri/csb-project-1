@@ -6,6 +6,18 @@ This repository contains the [Cyber Security Base Project 1](https://cybersecuri
 
 The code in this repository is for demo purposes only and not to be run in public internet or distributed.
 
+## Bitter
+
+Bitter - a bit like twitter. With a severely faulty security configuration.
+
+#### Features
+
+- Creating a user
+
+- Posting on public feed
+
+- Sign in and Sign out
+
 ## How to run
 
 - Make sure you have Python 3.10 or newer installed.
