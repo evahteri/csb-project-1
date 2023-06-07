@@ -123,3 +123,26 @@ https://github.com/evahteri/csb-project-1/blob/eebcd7504536355c82247a824c3b3f548
         return True
 
 
+### 4.Missing CSRF protection
+
+https://github.com/evahteri/csb-project-1/blob/ab3f3e3e7f09cd3507bfbfc406349a4091e80ecb/templates/index.html#L41
+
+Missing CSRF protection allows users that are not signed in to use forms to insert data. The application does not check that a page request is made by a logged in user. If a signed in user is lured in to an external page that calls the application's function to create a new post, the post would be created and the post would seem that it is sent by the user that is signed in.
+
+#### Fix
+
+There should be a secret CSRF token to check if the form is sent from the right source.
+
+This can be done by adding these lines:
+
+- https://github.com/evahteri/csb-project-1/blob/ae63ab0e4c08f5ecbbd3b215cb40eb436a1a1fcf/routes.py#L62
+
+- https://github.com/evahteri/csb-project-1/blob/ae63ab0e4c08f5ecbbd3b215cb40eb436a1a1fcf/routes.py#L29
+
+- https://github.com/evahteri/csb-project-1/blob/ae63ab0e4c08f5ecbbd3b215cb40eb436a1a1fcf/routes.py#L62
+
+- https://github.com/evahteri/csb-project-1/blob/ae63ab0e4c08f5ecbbd3b215cb40eb436a1a1fcf/templates/index.html#L45
+
+
+What these changes do: creates a unique CSRF key for the session and then the key is checked to validate user.
+
