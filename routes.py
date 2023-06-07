@@ -1,5 +1,6 @@
 from flask import Flask
-from flask import render_template, request, jsonify, flash, redirect, session
+import secrets
+from flask import render_template, request, jsonify, flash, redirect, session, abort
 import json
 from app import app
 from services.repository import repository
@@ -25,6 +26,7 @@ def create_user():
         flash("Username already exists!")
         return redirect("/")
     if repository.create_user(username, password, role=0):
+        #session["csrf_token"] = secrets.token_hex(16)
         flash("User created successfully!")
         return redirect("/")
 
@@ -45,6 +47,7 @@ def sign_in():
         session["username"] = username
         role = repository.get_user_role(username)
         session["role"] = role
+        #session["csrf_token"] = secrets.token_hex(16)
         flash(f"Signed in as {username}")
         return redirect("/")
     flash("Check username and password")
@@ -56,6 +59,8 @@ def post():
     if len(post_text) < 1:
         # Error here to demo the debugger
         return error
+    #if session["csrf_token"] != request.form["csrf_token"]:
+        #abort(403)
     repository.create_post(post_text)
     flash("Posted on Bitter!")
     return redirect("/")

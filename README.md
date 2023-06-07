@@ -99,3 +99,27 @@ Do not create an admin user with poor password. Every admin user should be creat
 
 Do not use the application's backend to serve as an open backend. Remove the APIs from routes.py.
 
+### 3.A02:2021 – Cryptographic Failures
+
+https://github.com/evahteri/csb-project-1/blob/eebcd7504536355c82247a824c3b3f5489c3520b/routes.py#L18
+
+Cryptographic failures are flaws in the application that compromise password and login security. Storing sensitive data needs extra protection and failing to do so, might allow sensitive data to fall into attacker's hands. In context of this application, the sensitive data in case is passwords. They should be crypted when inserted to the database, but they are not.
+
+#### Fix
+
+Create a hash password when saving. Here is the fixed function:
+
+https://github.com/evahteri/csb-project-1/blob/eebcd7504536355c82247a824c3b3f5489c3520b/services/repository.py#L2
+
+    def fixed_create_user(self, username, password, role):
+        hash_value = generate_password_hash(password)
+        values = {"username": username, "password": hash_value, "role": role}
+        sql = """INSERT INTO users (username, password, role)
+        VALUES (:username, :password, :role)"""
+        self._db.session.execute(text(sql), values)
+        self._db.session.commit()
+        session["username"] = username
+        session["role"] = role
+        return True
+
+
