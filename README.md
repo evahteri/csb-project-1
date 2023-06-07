@@ -49,3 +49,37 @@ And then copy the string to the .env file.
 - Run ``` psql < schema.sql ``` to create tables to the database.
 
 - Run ``` bash start.sh ``` in the root of the application.
+
+## Vulnerabilities
+
+### 1. A03:2021 – Injection
+
+https://github.com/evahteri/csb-project-1/blob/d4c55eed3546b3e54c961dce9f4b85e4bd620e93/services/repository.py#L9
+
+and 
+
+https://github.com/evahteri/csb-project-1/blob/d4c55eed3546b3e54c961dce9f4b85e4bd620e93/services/repository.py#L51
+
+Injection is a flaw in the program where user inputted data is not validated or sanitized, but rather accepted inside the database raw. In this case the injection is an SQL injection which allows the user to alter the SQL command used to save data into the database
+
+#### Fix
+
+User input should not be inserted straight into the SQL string, but through using separate entity to store values.
+
+Here is the fixed user creation function:
+
+    def fixed_create_user(self, username, password, role):
+        hash_value = generate_password_hash(password)
+        values = {"username": username, "password": hash_value, "role": role}
+        sql = """INSERT INTO users (username, password, role)
+        VALUES (:username, :password, :role)"""
+        self._db.session.execute(text(sql), values)
+        self._db.session.commit()
+        session["username"] = username
+        session["role"] = role
+        return True
+
+The create_post function ought to be fixed in the same way.
+
+
+

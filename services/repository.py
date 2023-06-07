@@ -1,5 +1,6 @@
 from flask import session
 from services.db import (db as default_db)
+from werkzeug.security import generate_password_hash
 from sqlalchemy.sql import text
 
 class Repository:
@@ -16,6 +17,17 @@ class Repository:
         session["username"] = username
         session["role"] = role
         return True
+    
+#    def fixed_create_user(self, username, password, role):
+#        hash_value = generate_password_hash(password)
+#        values = {"username": username, "password": hash_value, "role": role}
+#        sql = """INSERT INTO users (username, password, role)
+#        VALUES (:username, :password, :role)"""
+#        self._db.session.execute(text(sql), values)
+#        self._db.session.commit()
+#        session["username"] = username
+#        session["role"] = role
+#        return True
     
     def search_user(self, username):
         sql = f"""SELECT username
