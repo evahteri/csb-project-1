@@ -32,6 +32,8 @@ def create_user():
 def sign_out():
     if session["username"]:
         del session["username"]
+    if session["role"]:
+        del session["role"]
     flash("Signed out")
     return redirect("/")
 
@@ -41,10 +43,12 @@ def sign_in():
     password = request.form["password"]
     if repository.sign_in(username, password):
         session["username"] = username
+        role = repository.get_user_role(username)
+        session["role"] = role
         flash(f"Signed in as {username}")
         return redirect("/")
     flash("Check username and password")
-    False
+    return redirect("/")
 
 @app.route("/post_text", methods=["POST"])
 def post():
@@ -56,4 +60,36 @@ def post():
     flash("Posted on Bitter!")
     return redirect("/")
 
+@app.route("/delete_post/<int:post_id>", methods=["POST", "GET"])
+def delete_post(post_id):
+    if session["role"] == 1:
+        if repository.delete_post(post_id):
+            flash("Post deleted")
+            return redirect("/")
+        flash("Something went wrong")
+        return redirect("/")
+    flash("Not authorised")
+    return redirect("/")
+
+@app.route("/api/users", methods=["GET"])
+def get_users():
+    data = repository.get_users()
+    items = []
+    for row in data:
+        items.append({"id": row[0], 
+                      "username": row[1],
+                      "password": row[2],
+                      "role": row[3]})
+    return items
+
+@app.route("/api/posts", methods=["GET"])
+def get_posts():
+    data = repository.get_posts()
+    items = []
+    for row in data:
+        items.append({"id": row[0], 
+                      "user_id": row[1],
+                      "text": row[2],
+                      "created_at": str(row[3])})
+    return items
 

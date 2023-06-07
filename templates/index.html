@@ -50,8 +50,11 @@
 <br>
     {% for post in posts %}
     <div class="post_text">
-        Written by: {{ post.username }}<br>
+        @{{ post.username }}<br>
         <p>{{ post.text }}</p>
+        {% if session.role == 1%}
+        <a class="icons" href="/delete_post/{{ post.id }}"><span class="material-icons">delete</span></a>
+        {% endif %}
     </div>
     <br>
 {% endfor %}

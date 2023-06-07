@@ -11,3 +11,6 @@ CREATE TABLE IF NOT EXISTS posts (
     text TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+INSERT INTO users (username, password, role)
+VALUES ('admin', 'admin', 1);

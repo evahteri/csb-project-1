@@ -14,6 +14,7 @@ class Repository:
         self._db.session.execute(text(sql))
         self._db.session.commit()
         session["username"] = username
+        session["role"] = role
         return True
     
     def search_user(self, username):
@@ -35,11 +36,17 @@ class Repository:
         return True
 
     def _get_user_id(self):
-        values = {"username": session["username"]}
-        sql = """SELECT id FROM users
-        WHERE username=:username"""
-        result = self._db.session.execute(sql, values).fetchone()
+        username = session["username"]
+        sql = f"""SELECT id FROM users
+        WHERE username='{username}'"""
+        result = self._db.session.execute(text(sql)).fetchone()
         return result.id
+
+    def get_user_role(self, username):
+        sql = f"""SELECT role FROM users
+        WHERE username='{username}'"""
+        result = self._db.session.execute(text(sql)).fetchone()
+        return result.role
 
     def create_post(self, post_text):
         # SQL injection
@@ -58,5 +65,25 @@ class Repository:
                 LIMIT 100"""
         results = self._db.session.execute(text(sql)).fetchall()
         return results
+
+    def delete_post(self, post_id):
+        values = {"post_id": post_id}
+        sql = f"""DELETE FROM posts
+        WHERE id ='{post_id}'"""
+        if self._db.session.execute(text(sql)):
+            self._db.session.commit()
+            return True
+        return False
+    
+    def get_users(self):
+        sql = """SELECT * FROM users"""
+        results = self._db.session.execute(text(sql)).fetchall()
+        return results
+
+    def get_posts(self):
+        sql = """SELECT * FROM posts"""
+        results = self._db.session.execute(text(sql)).fetchall()
+        return results
+
 
 repository = Repository()
