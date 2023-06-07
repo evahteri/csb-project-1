@@ -7,6 +7,9 @@
 {% if session.username %}
 
 <p>Welcome {{ session.username }}!</p>
+{% if session.role == 1%}
+use /api/users to get user data
+{% endif %}
 
 {% else %}
 <h3>Sign in or create user</h3>

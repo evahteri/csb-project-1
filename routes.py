@@ -73,14 +73,17 @@ def delete_post(post_id):
 
 @app.route("/api/users", methods=["GET"])
 def get_users():
-    data = repository.get_users()
-    items = []
-    for row in data:
-        items.append({"id": row[0], 
-                      "username": row[1],
-                      "password": row[2],
-                      "role": row[3]})
-    return items
+    if session["role"] == 1:
+        data = repository.get_users()
+        items = []
+        for row in data:
+            items.append({"id": row[0], 
+                        "username": row[1],
+                        "password": row[2],
+                        "role": row[3]})
+        return items
+    flash("Not authorised")
+    return redirect("/")
 
 @app.route("/api/posts", methods=["GET"])
 def get_posts():

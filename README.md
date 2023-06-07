@@ -68,6 +68,8 @@ User input should not be inserted straight into the SQL string, but through usin
 
 Here is the fixed user creation function:
 
+https://github.com/evahteri/csb-project-1/blob/eebcd7504536355c82247a824c3b3f5489c3520b/services/repository.py#L21
+
     def fixed_create_user(self, username, password, role):
         hash_value = generate_password_hash(password)
         values = {"username": username, "password": hash_value, "role": role}
@@ -81,5 +83,19 @@ Here is the fixed user creation function:
 
 The create_post function ought to be fixed in the same way.
 
+### 2. A01:2021 – Broken Access Control
 
+https://github.com/evahteri/csb-project-1/blob/eebcd7504536355c82247a824c3b3f5489c3520b/schema.sql#L15
+
+and
+
+https://github.com/evahteri/csb-project-1/blob/eebcd7504536355c82247a824c3b3f5489c3520b/routes.py#L74
+
+Broken access control allows users to get access to functions or data that is not within their user's limits. In this application there is a major flaw that fall into this category: In schema.sql, an admin user is created with a poor combination of username and password (username: admin, password: admin). Access to this user allows anyone to delete posts from the website and to get all user data from an API via http://localhost:5000/api/users. It includes sensitive data such as passwords.
+
+#### Fix 
+
+Do not create an admin user with poor password. Every admin user should be created with unique username and password. Remove the line from schema.sql and use psql to create your own admin user.
+
+Do not use the application's backend to serve as an open backend. Remove the APIs from routes.py.
 
