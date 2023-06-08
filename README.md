@@ -122,6 +122,20 @@ https://github.com/evahteri/csb-project-1/blob/eebcd7504536355c82247a824c3b3f548
         session["role"] = role
         return True
 
+Remember to alter the sign in function to match:
+
+https://github.com/evahteri/csb-project-1/blob/5647ad0148ab418ce208796e25462dac81efb88e/services/repository.py#L50
+
+    def fixed_sign_in(self, username, password):
+        values = {"username": username}
+        sql = """SELECT id, username, password, role FROM users WHERE username=:username"""
+        user = self._db.session.execute(text(sql), values).fetchone()
+        if not user:
+            return False
+        hash_password = user.password
+        if check_password_hash(hash_password, password):
+            return True
+        return False
 
 ### 4.Missing CSRF protection
 
