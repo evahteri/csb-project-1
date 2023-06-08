@@ -1,6 +1,6 @@
 from flask import session
 from services.db import (db as default_db)
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy.sql import text
 
 class Repository:
@@ -46,6 +46,17 @@ class Repository:
         if not user.password == password:
             return False
         return True
+    
+#    def fixed_sign_in(self, username, password):
+#        values = {"username": username}
+#        sql = """SELECT id, username, password, role FROM users WHERE username=:username"""
+#        user = self._db.session.execute(text(sql), values).fetchone()
+#        if not user:
+#            return False
+#        hash_password = user.password
+#        if check_password_hash(hash_password, password):
+#            return True
+#        return False
 
     def _get_user_id(self):
         username = session["username"]
@@ -79,7 +90,6 @@ class Repository:
         return results
 
     def delete_post(self, post_id):
-        values = {"post_id": post_id}
         sql = f"""DELETE FROM posts
         WHERE id ='{post_id}'"""
         if self._db.session.execute(text(sql)):

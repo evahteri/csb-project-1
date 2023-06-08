@@ -18,7 +18,7 @@ Bitter - a bit like twitter. With a severely faulty security configuration.
 
 - Sign in and Sign out
 
-## How to run
+## Installation
 
 - Make sure you have Python 3.10 or newer installed.
 
@@ -28,13 +28,13 @@ Bitter - a bit like twitter. With a severely faulty security configuration.
 
 - Clone this repository on your computer.
 
-- Create a file called .env in the root of the application
+- Create a file called ```.env``` in the root of the application
 
-- Write DATABASE_URL=postgresql:///_your_username_ in the file
+- Write ```DATABASE_URL=postgresql:///_your_username_``` in the .env file
 
-- Write SECRET_KEY=_random_combination_of_digits_and_numbers_ in the file
+- Write ```SECRET_KEY=_random_combination_of_digits_and_numbers_``` in the file
 
-- Tip! you can create a random secret as follows:
+- Tip! you can create a random string as follows:
 
 ``` python3 ```
 
@@ -42,13 +42,13 @@ Bitter - a bit like twitter. With a severely faulty security configuration.
 
 ``` secrets.token_hex(16) ```
 
-And then copy the string to the .env file.
-
 - Run ``` pip install -r requirements.txt ``` to install dependencies.
 
 - Run ``` psql < schema.sql ``` to create tables to the database.
 
-- Run ``` bash start.sh ``` in the root of the application.
+- Run ``` bash start.sh ``` in the root of the application to launch the app.
+
+- Navigate to ```http://localhost:5000/``` to use it.
 
 ## Vulnerabilities
 
@@ -127,7 +127,7 @@ https://github.com/evahteri/csb-project-1/blob/eebcd7504536355c82247a824c3b3f548
 
 https://github.com/evahteri/csb-project-1/blob/ab3f3e3e7f09cd3507bfbfc406349a4091e80ecb/templates/index.html#L41
 
-Missing CSRF protection allows users that are not signed in to use forms to insert data. The application does not check that a page request is made by a logged in user. If a signed in user is lured in to an external page that calls the application's function to create a new post, the post would be created and the post would seem that it is sent by the user that is signed in.
+Missing CSRF protection allows users that are not signed in to use forms to insert data. The application does not check that a page request is made by a logged in user. If a signed in user is lured into an external page that calls the application's function to create a new post, the post would be created and the post would seem that it is sent by the user that is signed in.
 
 #### Fix
 
@@ -146,3 +146,14 @@ This can be done by adding these lines:
 
 What these changes do: creates a unique CSRF key for the session and then the key is checked to validate user.
 
+### 5. A05:2021 – Security Misconfiguration
+
+https://github.com/evahteri/csb-project-1/blob/218980832eb16fa3b393215bf399b3a5d5fdb110/start.sh#L3
+
+Security misconfiguration happens when an application is configured so that it leaves vulnerabilities open. This can be unnecessary opened ports, improperly configured security settings, improper error handling etc. In this application, the application is run in debug mode which results in overly informative error messages.
+
+When trying to post an empty post with the application, an error occurs, showing detailed information about the error. The attacker can now open details about the function that caused the error and see that the CSRF protection is commented out, thus revealing a vulnerability in the application.
+
+#### Fix
+
+Do not run the flask application in debug mode. Remove the tag ```--debug``` from the start script.

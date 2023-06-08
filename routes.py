@@ -25,7 +25,7 @@ def create_user():
     if repository.search_user(username):
         flash("Username already exists!")
         return redirect("/")
-    if repository.create_user(username, password, role=0):
+    if repository.fixed_create_user(username, password, role=0):
         #session["csrf_token"] = secrets.token_hex(16)
         flash("User created successfully!")
         return redirect("/")
@@ -43,7 +43,7 @@ def sign_out():
 def sign_in():
     username = request.form["username"]
     password = request.form["password"]
-    if repository.sign_in(username, password):
+    if repository.fixed_sign_in(username, password):
         session["username"] = username
         role = repository.get_user_role(username)
         session["role"] = role
